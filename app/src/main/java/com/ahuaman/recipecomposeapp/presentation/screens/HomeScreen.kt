@@ -1,4 +1,4 @@
-package com.ahuaman.recipecomposeapp.screens
+package com.ahuaman.recipecomposeapp.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -25,6 +26,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +40,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -46,8 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ahuaman.recipecomposeapp.R
 import com.ahuaman.recipecomposeapp.composables.ItemRecipe
-import com.ahuaman.recipecomposeapp.data.mock.MockDataSource
-import com.ahuaman.recipecomposeapp.domain.IngredientDomain
+import com.ahuaman.recipecomposeapp.data.mock.SampleDataSource
 import com.ahuaman.recipecomposeapp.domain.RecipeDomain
 import com.ahuaman.recipecomposeapp.ui.theme.RecipeComposeAppTheme
 
@@ -55,14 +58,14 @@ import com.ahuaman.recipecomposeapp.ui.theme.RecipeComposeAppTheme
 @Composable
 fun HomeScreen(
     onQueryChange: (String) -> Unit,
-    onClickRecipe: (RecipeDomain) -> Unit
+    onClickRecipe: (RecipeDomain) -> Unit,
+    searchQuery: String,
+    recipes: List<RecipeDomain>
 ) {
 
     val isDark = isSystemInDarkTheme()
-    var searchQuery by rememberSaveable { mutableStateOf("") }
 
     when {
-
         else -> {
             Column(modifier = Modifier
                 .fillMaxSize()
@@ -70,9 +73,11 @@ fun HomeScreen(
                     rememberScrollState()
                 )) {
                 //Header of the screen
-                Box() {
+                Box(
+
+                ) {
                     Card(
-                        shape = RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp),
+                        shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp),
                     ) {
                         Image(
                             modifier = Modifier
@@ -111,27 +116,34 @@ fun HomeScreen(
                     SearchBar(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .align(Alignment.TopCenter).semantics { traversalIndex = 0f }
                             .padding(horizontal = 16.dp)
-                            .height(70.dp)
                             .offset(y = 200.dp)
-                            .clip(RoundedCornerShape(40.dp)),
-                        query = searchQuery,
-                        onQueryChange = {  queryChanged ->
-                            searchQuery = queryChanged // update the query state
-                            onQueryChange(queryChanged) // call the callback
+                            .clip(RoundedCornerShape(10.dp)),
+
+                        inputField = {
+                            SearchBarDefaults.InputField(
+                                query = searchQuery,
+                                onQueryChange = {
+                                    onQueryChange(it)
+                                },
+                                onSearch = {
+                                    onQueryChange(searchQuery)
+                                },
+                                expanded = false,
+                                onExpandedChange = {
+                                  //TODO: Implement search suggestions
+                                },
+                                placeholder = { Text(stringResource(R.string.search)) },
+                                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                            )
                         },
-                        onSearch = { query ->
-                            // Handle search ImeAction.Search here
-                        },
-                        active = true,
-                        onActiveChange = { isActive ->
-                        },
-                        placeholder = { Text(stringResource(R.string.search)) },
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                        //trailingIcon = { Icon(Icons.Default.MoreVert, contentDescription = null) }
+                        expanded = false,
+                        onExpandedChange = {
+                            //TODO: Implement search suggestions
+                        }
                     ) {
-                        // Show suggestions here
-                        // for example a LazyColumn with suggestion items
+
                     }
 
                 }
@@ -161,14 +173,14 @@ fun HomeScreen(
                         else -> {
                             //show list of recipes
                             LazyVerticalGrid(
-                                userScrollEnabled = true,
+                                userScrollEnabled = false,
                                 modifier = Modifier.height(400.dp),
                                 columns = GridCells.Fixed(2),
                                 contentPadding = PaddingValues(16.dp),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                                 verticalArrangement = Arrangement.spacedBy(16.dp),
                             ){
-                                items(MockDataSource.listRecipes) { recipe ->
+                                items(recipes) { recipe ->
                                     ItemRecipe(model = recipe, onClick = {
                                         onClickRecipe(recipe)
                                     } )
@@ -188,11 +200,12 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPrev() {
-    RecipeComposeAppTheme() {
-
+    RecipeComposeAppTheme {
         HomeScreen(
             onQueryChange = {},
-            onClickRecipe = {}
+            onClickRecipe = {},
+            searchQuery = "Hola",
+            recipes = SampleDataSource.listRecipes
         )
     }
 }

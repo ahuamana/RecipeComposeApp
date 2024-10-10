@@ -3,7 +3,7 @@ package com.ahuaman.recipecomposeapp.data.mock
 import com.ahuaman.recipecomposeapp.domain.IngredientDomain
 import com.ahuaman.recipecomposeapp.domain.RecipeDomain
 
-object MockDataSource {
+object SampleDataSource {
 
     val listRecipes = listOf(
         RecipeDomain(

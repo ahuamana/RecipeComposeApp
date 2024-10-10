@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.compose.compiler)
     //Kotlin Serialization for Safe Args
     alias(libs.plugins.kotlin.serialization.json)
+    //Hilt & KSP
+    alias(libs.plugins.kotlin.android.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -74,4 +77,13 @@ dependencies {
 
     //Coil
     implementation(libs.coil.compose)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    //lifecycle
+    implementation (libs.lifecycle.viewmodel.compose)
+    implementation (libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 }

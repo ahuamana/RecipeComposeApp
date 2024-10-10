@@ -1,4 +1,4 @@
-package com.ahuaman.recipecomposeapp.screens
+package com.ahuaman.recipecomposeapp.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

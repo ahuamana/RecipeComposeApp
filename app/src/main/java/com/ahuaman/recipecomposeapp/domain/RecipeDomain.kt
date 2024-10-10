@@ -1,5 +1,8 @@
 package com.ahuaman.recipecomposeapp.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RecipeDomain(
     val id: String,
     val title: String,
@@ -16,6 +19,7 @@ data class RecipeDomain(
     val lon: Double?= null,
 )
 
+@Serializable
 data class IngredientDomain(
     val id: String,
     val name: String,
