@@ -168,7 +168,6 @@ fun HomeScreen(
                             //show list of recipes
                             LazyVerticalGrid(
                                 userScrollEnabled = true,
-                                modifier = Modifier.height(400.dp),
                                 columns = GridCells.Fixed(2),
                                 contentPadding = PaddingValues(16.dp),
                                 horizontalArrangement = Arrangement.spacedBy(16.dp),
