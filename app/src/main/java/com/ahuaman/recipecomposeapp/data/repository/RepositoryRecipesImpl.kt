@@ -13,4 +13,8 @@ class RepositoryRecipesImpl @Inject constructor(
     override fun getRecipes(): List<RecipeDomain> {
         return localDataSource.getRecipes()
     }
+
+    override fun searchByName(name: String): List<RecipeDomain> {
+        return localDataSource.searchByName(name)
+    }
 }

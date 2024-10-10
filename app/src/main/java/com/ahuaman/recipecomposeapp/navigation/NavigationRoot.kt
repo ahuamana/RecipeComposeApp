@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -33,6 +34,8 @@ fun NavigationRoot(controller: NavHostController = rememberNavController()) {
             )
         }
         composable<RootScreens.DashboardScreen> {
+            val keyboardController = LocalSoftwareKeyboardController.current
+
             val viewModel = hiltViewModel<HomeViewModel>()
             val states by viewModel.intent.collectAsStateWithLifecycle()
 
@@ -46,6 +49,11 @@ fun NavigationRoot(controller: NavHostController = rememberNavController()) {
                 },
                 onClickRecipe = { recipe ->
                     controller.navigate(RootScreens.RecipeDetailScreen(recipe.toJson()))
+                },
+                onSearch = { query ->
+                    viewModel.processIntent(HomeViewIntent.SearchRecipesIntent(query))
+                    //close keyboard
+                    keyboardController?.hide()
                 },
                 searchQuery = states.query,
                 recipes = states.recipes

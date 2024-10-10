@@ -58,23 +58,18 @@ import com.ahuaman.recipecomposeapp.ui.theme.RecipeComposeAppTheme
 @Composable
 fun HomeScreen(
     onQueryChange: (String) -> Unit,
+    onSearch: (String) -> Unit,
     onClickRecipe: (RecipeDomain) -> Unit,
     searchQuery: String,
     recipes: List<RecipeDomain>
 ) {
-
-    val isDark = isSystemInDarkTheme()
-
     when {
         else -> {
             Column(modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(
-                    rememberScrollState()
-                )) {
+                .fillMaxSize()) {
                 //Header of the screen
-                Box(
-
+                Box(modifier = Modifier
+                    .fillMaxWidth()
                 ) {
                     Card(
                         shape = RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp),
@@ -128,7 +123,7 @@ fun HomeScreen(
                                     onQueryChange(it)
                                 },
                                 onSearch = {
-                                    onQueryChange(searchQuery)
+                                    onSearch(searchQuery)
                                 },
                                 expanded = false,
                                 onExpandedChange = {
@@ -162,7 +157,6 @@ fun HomeScreen(
                     Text(
                         modifier = Modifier.padding(start = 16.dp),
                         text = stringResource(R.string.popular_recipes),
-                        color = if(isDark) Color.White else Color.Black,
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -173,7 +167,7 @@ fun HomeScreen(
                         else -> {
                             //show list of recipes
                             LazyVerticalGrid(
-                                userScrollEnabled = false,
+                                userScrollEnabled = true,
                                 modifier = Modifier.height(400.dp),
                                 columns = GridCells.Fixed(2),
                                 contentPadding = PaddingValues(16.dp),
@@ -204,6 +198,7 @@ fun HomeScreenPrev() {
         HomeScreen(
             onQueryChange = {},
             onClickRecipe = {},
+            onSearch = {},
             searchQuery = "Hola",
             recipes = SampleDataSource.listRecipes
         )

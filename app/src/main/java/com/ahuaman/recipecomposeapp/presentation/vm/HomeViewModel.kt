@@ -23,16 +23,28 @@ class HomeViewModel @Inject constructor(
     fun processIntent(intent: HomeViewIntent) = viewModelScope.launch {
         when(intent) {
                 is HomeViewIntent.SearchRecipesIntent -> {
-                    val currentState = _intent.value
-                    _intent.value = currentState.copy(query = intent.query)
+                    searchByName(intent.query)
                 }
 
                 is HomeViewIntent.OnQueryChangedIntent -> {
-                    val currentState = _intent.value
-                    _intent.value = currentState.copy(query = intent.query)
+                    onQueryChangeAndSearch(intent.query)
                 }
             }
         }
+
+    private fun onQueryChangeAndSearch(query: String) = viewModelScope.launch {
+        val currentState = _intent.value
+        _intent.value = currentState.copy(query = query)
+        searchByName(query)
+    }
+
+    private fun searchByName(name: String) = viewModelScope.launch {
+        val currentState = _intent.value
+        _intent.value = currentState.copy(isLoading = true)
+
+        val recipes = repositoryRecipes.searchByName(name)
+        _intent.value = currentState.copy(isLoading = false, recipes = recipes)
+    }
 
     fun getRecipes() = viewModelScope.launch {
         val currentState = _intent.value
