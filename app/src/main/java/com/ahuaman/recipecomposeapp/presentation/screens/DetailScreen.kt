@@ -27,8 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.text.parseAsHtml
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -70,6 +74,8 @@ fun DetailScreen(
                 Column(modifier = Modifier.fillMaxSize()) {
                     Text(
                         text = model.title,
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
                         modifier = Modifier.padding(16.dp),
                         color = Color.Black
                     )
@@ -125,7 +131,9 @@ fun DetailScreen(
                     //Ingredients
                     Text(
                         text = "Ingredients",
-                        modifier = Modifier.padding(16.dp),
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         color = Color.Black
                     )
 
