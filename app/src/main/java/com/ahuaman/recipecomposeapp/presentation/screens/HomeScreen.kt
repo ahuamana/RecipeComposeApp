@@ -1,5 +1,10 @@
 package com.ahuaman.recipecomposeapp.presentation.screens
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -48,20 +53,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.ahuaman.recipecomposeapp.R
 import com.ahuaman.recipecomposeapp.composables.ItemRecipe
 import com.ahuaman.recipecomposeapp.data.mock.SampleDataSource
 import com.ahuaman.recipecomposeapp.domain.RecipeDomain
 import com.ahuaman.recipecomposeapp.ui.theme.RecipeComposeAppTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HomeScreen(
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
     onClickRecipe: (RecipeDomain) -> Unit,
     searchQuery: String,
-    recipes: List<RecipeDomain>
+    recipes: List<RecipeDomain>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedContentScope: AnimatedVisibilityScope
 ) {
     when {
         else -> {
@@ -174,9 +184,12 @@ fun HomeScreen(
                                 verticalArrangement = Arrangement.spacedBy(16.dp),
                             ){
                                 items(recipes) { recipe ->
-                                    ItemRecipe(model = recipe, onClick = {
-                                        onClickRecipe(recipe)
-                                    } )
+                                    ItemRecipe(
+                                        model = recipe,
+                                        onClick = { onClickRecipe(recipe) },
+                                        sharedTransitionScope = sharedTransitionScope,
+                                        animatedContentScope = animatedContentScope
+                                    )
                                 }
                             }
                         }
@@ -190,16 +203,26 @@ fun HomeScreen(
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview
 @Composable
 fun HomeScreenPrev() {
-    RecipeComposeAppTheme {
-        HomeScreen(
-            onQueryChange = {},
-            onClickRecipe = {},
-            onSearch = {},
-            searchQuery = "Hola",
-            recipes = SampleDataSource.listRecipes
-        )
+    SharedTransitionLayout {
+        NavHost(
+            navController = rememberNavController(),
+            startDestination = "home"
+        ) {
+            composable("home") {
+                HomeScreen(
+                    onQueryChange = {},
+                    onClickRecipe = {},
+                    onSearch = {},
+                    searchQuery = "Hola",
+                    recipes = SampleDataSource.listRecipes,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedContentScope = this@composable
+                )
+            }
+        }
     }
 }

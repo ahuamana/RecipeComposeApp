@@ -1,5 +1,10 @@
 package com.ahuaman.recipecomposeapp.composables
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -12,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -29,6 +33,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHost
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.ahuaman.recipecomposeapp.R
 import com.ahuaman.recipecomposeapp.domain.IngredientDomain
@@ -36,78 +44,89 @@ import com.ahuaman.recipecomposeapp.domain.RecipeDomain
 import com.ahuaman.recipecomposeapp.ui.theme.PrimaryColorRecipes
 import com.ahuaman.recipecomposeapp.ui.theme.RecipeComposeAppTheme
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ItemRecipe(
     model: RecipeDomain,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    sharedTransitionScope : SharedTransitionScope,
+    animatedContentScope: AnimatedVisibilityScope
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(
-                interactionSource = interactionSource,
-                indication = ripple(bounded = true, radius = 24.dp),
-                onClick = onClick
-            )
-    ) {
-        Card(modifier = Modifier.height(126.dp)) {
-            Box() {
-                AsyncImage(
-                    modifier = Modifier.fillMaxSize(),
-                    model = model.image, contentDescription = model.summary,
-                    contentScale = androidx.compose.ui.layout.ContentScale.Crop
+    with(sharedTransitionScope) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = ripple(bounded = true, radius = 24.dp),
+                    onClick = onClick
                 )
-
-                Card(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.TopEnd)
-                    ,
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(15.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = PrimaryColorRecipes
+        ) {
+            Card(modifier = Modifier.height(126.dp)) {
+                Box() {
+                    AsyncImage(
+                        modifier = Modifier
+                            .sharedElement(
+                                state = sharedTransitionScope.rememberSharedContentState(key = "image-${model.id}"),
+                                animatedVisibilityScope = animatedContentScope
+                            ).fillMaxSize(),
+                        model = model.image, contentDescription = model.summary,
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop,
                     )
-                ) {
 
-                    Row(
-                        modifier = Modifier.padding(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                     Image(painter = painterResource(id = R.drawable.ic_start), contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = model.healthScore.toString(),
-                            color = Color.White,
-                            fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+                    Card(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.TopEnd)
+                        ,
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(15.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = PrimaryColorRecipes
                         )
+                    ) {
+
+                        Row(
+                            modifier = Modifier.padding(4.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(painter = painterResource(id = R.drawable.ic_start), contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = model.healthScore.toString(),
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+                            )
+                        }
                     }
+
                 }
 
             }
-
+            Spacer(modifier = Modifier.height(8.dp))
+            //title
+            Text(
+                text =  model.title,
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 20.sp,
+                fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+            )
+            //type
+            Text(
+                text = model.type ?: "",
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+            )
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        //title
-        Text(
-            text =  model.title,
-            modifier = Modifier.fillMaxWidth(),
-            fontSize = 20.sp,
-            fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
-        )
-        //type
-        Text(
-            text = model.type ?: "",
-            modifier = Modifier.fillMaxWidth(),
-            fontSize = 14.sp,
-            fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
-        )
     }
+
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview
 @Composable
 fun ItemRecipePrev() {
@@ -116,6 +135,7 @@ fun ItemRecipePrev() {
         title = "Banana Pancakes",
         summary = "Cake",
         image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+        authorImage = "Katie Nolan",
         healthScore = 4.5f,
         extendedIngredients = listOf(
             IngredientDomain(
@@ -129,7 +149,16 @@ fun ItemRecipePrev() {
                 "3. Flip and cook until the other side is golden brown, about 1-2 minutes. Garnish your pancakes with your toppings of choice and enjoy!",
     )
 
-    RecipeComposeAppTheme {
-        ItemRecipe(model = model, onClick = { })
+    SharedTransitionLayout {
+        NavHost(
+            navController = rememberNavController(),
+            startDestination = "home"
+        ) {
+            composable("home") {
+                ItemRecipe(
+                    model = model, onClick = { }, sharedTransitionScope = this@SharedTransitionLayout, animatedContentScope = this@composable
+                )
+            }
+        }
     }
 }
