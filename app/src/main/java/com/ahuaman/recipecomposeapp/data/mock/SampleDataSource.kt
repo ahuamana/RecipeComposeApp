@@ -2,7 +2,6 @@ package com.ahuaman.recipecomposeapp.data.mock
 
 import com.ahuaman.recipecomposeapp.domain.IngredientDomain
 import com.ahuaman.recipecomposeapp.domain.RecipeDomain
-
 object SampleDataSource {
 
     val listRecipes = listOf(
@@ -15,12 +14,22 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Lamb",
+                    image = "https://www.themealdb.com/images/ingredients/Lamb.png"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Rice",
+                    image = "https://www.themealdb.com/images/ingredients/Rice.png"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Spices",
+                    image = "https://www.themealdb.com/images/ingredients/Parsley.png"
                 )
             ),
             instructions = "Instructions 1",
-            healthScore = 4.5f,
+            healthScore = 4.5f
         ),
         RecipeDomain(
             id = "2",
@@ -31,8 +40,18 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Strawberries",
+                    image = "https://www.themealdb.com/images/ingredients/Strawberries.png"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Cream",
+                    image = "https://www.themealdb.com/images/ingredients/Sour%20Cream.png"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Sugar",
+                    image = "https://www.themealdb.com/images/ingredients/Sugar.png"
                 )
             ),
             instructions = "Instructions 2",
@@ -47,8 +66,18 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Fish",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Vegetables",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Herbs",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
                 )
             ),
             instructions = "Instructions 3",
@@ -63,8 +92,18 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Olive Oil",
+                    image = "https://www.themealdb.com/images/ingredients/Olive%20Oil.png"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Carrots",
+                    image = "https://www.themealdb.com/images/ingredients/Carrots.png"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Onions",
+                    image = "https://www.themealdb.com/images/ingredients/Onion.png"
                 )
             ),
             instructions = "Instructions 4",
@@ -79,8 +118,18 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Beetroot",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Vegetable Stock",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Garlic",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
                 )
             ),
             instructions = "Instructions 4",
@@ -95,8 +144,18 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Fettucine",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Butter",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Parmesan Cheese",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
                 )
             ),
             instructions = "Instructions 4",
@@ -111,8 +170,18 @@ object SampleDataSource {
             extendedIngredients = listOf(
                 IngredientDomain(
                     id = "1",
-                    name = "Ingredient 1",
-                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg",
+                    name = "Beef",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "2",
+                    name = "Mushrooms",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
+                ),
+                IngredientDomain(
+                    id = "3",
+                    name = "Noodles",
+                    image = "https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg"
                 )
             ),
             instructions = "Instructions 4",

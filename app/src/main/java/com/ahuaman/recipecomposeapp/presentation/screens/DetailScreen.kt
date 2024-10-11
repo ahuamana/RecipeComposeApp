@@ -16,6 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -128,9 +131,11 @@ fun DetailScreen(
                         )
                     }
 
+                    Spacer(modifier = Modifier.size(8.dp))
+
                     //Ingredients
                     Text(
-                        text = "Ingredients",
+                        text = "Description",
                         fontSize = 20.sp,
                         fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -139,6 +144,36 @@ fun DetailScreen(
 
                     //preparation
                     HtmlText(html = model.summary, modifier = Modifier.padding(16.dp))
+
+                    //Steps
+                    Text(
+                        text = "Ingredients",
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        color = Color.Black
+                    )
+
+                    //LazyColumn
+                    LazyColumn() {
+                        itemsIndexed(model.extendedIngredients) { index, ingredient ->
+                            Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                                 AsyncImage(
+                                    model = ingredient.image,
+                                    contentDescription = "Ingredient",
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Spacer(modifier = Modifier.size(8.dp))
+                                //Text ingredient
+                                Text(
+                                    text = ingredient.name,
+                                    fontSize = 16.sp,
+                                    fontFamily = FontFamily(Font(R.font.googlesans_bold, FontWeight.Bold)),
+                                    color = Color.Black
+                                )
+                            }
+                        }
+                    }
                 }
             }
 
